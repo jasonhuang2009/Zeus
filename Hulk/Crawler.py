@@ -38,7 +38,7 @@ while True:
     ##期货下周合约成交记录
     my_trades.collect_future_trades('btc_usd', 'next_week')
     my_trades.collect_future_trades('ltc_usd', 'next_week')
-    '''
+    
     ##现货成交记录
     my_trades.collect_spot_trades('btc_usd')
     my_trades.collect_spot_trades('ltc_usd')
@@ -52,7 +52,7 @@ while True:
     ##现货1分钟日线
     my_kline.collect_spot_kline('btc_usd', '1min')
     my_kline.collect_spot_kline('ltc_usd','1min')
-    '''
+    
     print(count)
     count+=1
     print (time.strftime("%d/%m/%Y : %H:%M:%S"))

@@ -31,6 +31,7 @@ types = ['1min']
 
 count=0
 while True:
+    '''
     ##期货当周合约成交记录
     my_trades.collect_future_trades('btc_usd', 'this_week')
     my_trades.collect_future_trades('ltc_usd', 'this_week')
@@ -38,7 +39,7 @@ while True:
     ##期货下周合约成交记录
     my_trades.collect_future_trades('btc_usd', 'next_week')
     my_trades.collect_future_trades('ltc_usd', 'next_week')
-    
+    '''
     ##现货成交记录
     my_trades.collect_spot_trades('btc_usd')
     my_trades.collect_spot_trades('ltc_usd')

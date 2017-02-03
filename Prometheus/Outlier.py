@@ -12,7 +12,8 @@ class Outlier(object):
     __line = None
     __mydb = None
     
-    config = {'regression_cycle':30}
+    ##set the default value of regression cycle to be 30 mins
+    __regression_cycle = 30
 
 
     def __init__(self, dbconfig):

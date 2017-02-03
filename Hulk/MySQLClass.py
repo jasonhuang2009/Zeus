@@ -241,5 +241,5 @@ class MySQL(object):
         
         return such_future_trade_no
     ##end of def
-             
+    
         

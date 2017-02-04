@@ -7,20 +7,8 @@ Created on Jan 23, 2017
 from Hulk.Trades import Trades
 import time
 from Hulk.Kline import Kline
-
-dbconfig = {
-    'name':'leitao_mysql',
-    'host':'rm-2ze81w6e1675e0hd3o.mysql.rds.aliyuncs.com',
-    'user':'leitao_mysql',
-    'passwd':'Xiaoguai2009',
-    'db':'BitCoin'
-    }
-
-credential_USD = {
-    'apikey':'',
-    'secretkey':'',
-    'okcoinRESTURL':'www.okcoin.com'
-    }
+from Config import dbconfig
+from Config import credential_USD
 
 my_trades = Trades(dbconfig,credential_USD)
 my_kline = Kline(dbconfig, credential_USD)
@@ -57,6 +45,6 @@ while True:
     print(count)
     count+=1
     print (time.strftime("%d/%m/%Y : %H:%M:%S"))
-    time.sleep(2)
+    time.sleep(20)
     
     

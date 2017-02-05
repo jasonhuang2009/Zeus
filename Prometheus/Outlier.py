@@ -3,8 +3,10 @@ Created on Jan 24, 2017
 
 @author: leitaohuang
 '''
-from numpy import arange,array,ones
+##本策略利用BTC_USD 期货当周与下周之间的差价变动套利
 from scipy import stats 
+from numpy import arange,array,ones
+from Hulk.MySQLClass import MySQL
 
 class Outlier(object):
     __futures_trade_queue = None
@@ -13,19 +15,30 @@ class Outlier(object):
     __mydb = None
     
     ##set the default value of regression cycle to be 30 mins
-    __regression_cycle = 30
-
+    __regression_cycle = 60
 
     def __init__(self, dbconfig):
-        print('tbd')
+        self.__mydb = MySQL(dbconfig['host'],dbconfig['user'],dbconfig['passwd'],dbconfig['db'])
+
     ##end of def
     
-    def get_sequence(self):
-        print('tbd')
+    def get_sequence(self,symbol,kline_type,contract_type):
+        return self.__mydb.get_future_kline_sequence(symbol, kline_type, contract_type, self.__regression_cycle)
     ##end of def
         
-    def generate_linear(self,xi,y):
+    def generate_linear(self,symbol,kline_type,contract_type):
+        xi = arange(0,self.__regression_cycle)
+        A = array([ xi, ones(self.__regression_cycle)])
+        y=[]
+        for row in self.get_sequence(symbol,kline_type,contract_type):
+            y.append(row[0])
+        y.reverse()
         return stats.linregress(xi,y)
+    ##end of def
+    
+    def generate_anchor(self,symbol, kline_type, contract_type):
+        slope, intercept, r_value, p_value, std_err  = self.generate_linear(symbol, kline_type, contract_type)
+        return slope*self.__regression_cycle + intercept
     ##end of def
     
     def trade_trigger(self,market_depth):

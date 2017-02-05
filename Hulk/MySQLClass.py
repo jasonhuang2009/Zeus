@@ -7,6 +7,7 @@ Created on Jan 23, 2017
 import datetime
 import logging
 import pymysql
+import symbol
 
 
 class MySQL(object):
@@ -242,4 +243,33 @@ class MySQL(object):
         return such_future_trade_no
     ##end of def
     
+    def get_future_kline_sequence(self,symbol,kline_type,contract_type,count):
+        
+        sql_str=''
+        sequence=None
+        if symbol=='btc_usd':
+            sql_str = 'select (next_week.close-this_week.Close) as diff_in_close from kline_futures_btc_usd as this_week,kline_futures_btc_usd as next_week where this_week.timestamp = next_week.timestamp and this_week.contract_type="this_week" and next_week.contract_type = "next_week" and this_week.Type = "%s" and next_week.type="%s" order by this_week.timestamp desc limit 0,%d' % \
+            (kline_type,kline_type,count)
+        elif symbol=='ltc_usd':
+            sql_str = 'select (next_week.close-this_week.Close) as diff_in_close from kline_futures_ltc_usd as this_week,kline_futures_btc_usd as next_week where this_week.timestamp = next_week.timestamp and this_week.contract_type="this_week" and next_week.contract_type = "next_week" and this_week.Type = "%s" and next_week.type="%s" order by this_week.timestamp desc limit 0,%d' % \
+            (kline_type,kline_type,count)
+        elif symbol=='btc_cny':
+            sql_str = 'select (next_week.close-this_week.Close) as diff_in_close from kline_futures_btc_cny as this_week,kline_futures_btc_usd as next_week where this_week.timestamp = next_week.timestamp and this_week.contract_type="this_week" and next_week.contract_type = "next_week" and this_week.Type = "%s" and next_week.type="%s" order by this_week.timestamp desc limit 0,%d' % \
+            (kline_type,kline_type,count)     
+        else:
+            sql_str = 'select (next_week.close-this_week.Close) as diff_in_close from kline_futures_ltc_cny as this_week,kline_futures_btc_usd as next_week where this_week.timestamp = next_week.timestamp and this_week.contract_type="this_week" and next_week.contract_type = "next_week" and this_week.Type = "%s" and next_week.type="%s" order by this_week.timestamp desc limit 0,%d' % \
+            (kline_type,kline_type,count)    
+ 
+        self.openConnection()
+        try:
+            self.__session.execute(sql_str)
+            sequence = self.__session.fetchall()
+        except Exception:
+            logging.error(sql_str)   
+                
+        self.closeConnection()
+        
+        return sequence 
+        
+    ##end of def
         

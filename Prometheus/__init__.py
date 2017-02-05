@@ -14,8 +14,3 @@ y = [19, 20, 20.5, 21.5, 22, 23, 23, 25.5, 24]
 slope, intercept, r_value, p_value, std_err = stats.linregress(xi,y)
 line = slope*xi+intercept
 
-print(line)
-print(std_err)
-print(r_value)
-print(p_value)
-
